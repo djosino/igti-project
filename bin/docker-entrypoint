@@ -1,9 +1,8 @@
 #!/bin/bash -e
 
-sleep 5
 # If running the rails server then create or migrate existing database
 if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
-  ./bin/rails db:create
+#  ./bin/rails db:create
   ./bin/rails db:prepare
 fi
 

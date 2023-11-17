@@ -22,6 +22,8 @@ services:
       - database
     ports:
       - '3000:3000'
+    volumes:
+      - .:/rails
     env_file:
       - .env.development
     stdin_open: true
