@@ -19,6 +19,8 @@
 #  fk_rails_...  (album_id => albums.id)
 #
 class Music < ApplicationRecord
+  include Filterable
+
   belongs_to :album
 
   validates :title, presence: true

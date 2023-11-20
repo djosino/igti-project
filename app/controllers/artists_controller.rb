@@ -38,6 +38,13 @@ class ArtistsController < ApplicationController
     @artist.destroy!
   end
 
+  def newest
+    @artists =
+      Artist.where(created_at: Date.today.ago(1.week)..Date.tomorrow).order(id: :desc)
+
+    render json: @artists
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.

@@ -11,6 +11,8 @@
 #  updated_at :datetime         not null
 #
 class Artist < ApplicationRecord
+  include Filterable
+
   validates :nickname, presence: true
   validates :full_name, presence: true
   validates :birthday, presence: true

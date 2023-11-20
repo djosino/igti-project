@@ -1,19 +1,16 @@
 class MusicsController < ApplicationController
-  before_action :set_music, only: %i[ show update destroy ]
+  before_action :set_music, only: %i[show update destroy]
 
-  # GET /musics
   def index
     @musics = Music.all
 
     render json: @musics
   end
 
-  # GET /musics/1
   def show
     render json: @music
   end
 
-  # POST /musics
   def create
     @music = Music.new(music_params)
 
@@ -24,7 +21,6 @@ class MusicsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /musics/1
   def update
     if @music.update(music_params)
       render json: @music
@@ -33,19 +29,22 @@ class MusicsController < ApplicationController
     end
   end
 
-  # DELETE /musics/1
   def destroy
     @music.destroy!
   end
 
+  def coming_soon
+    @musics = Music.where(release_date: Date.tomorrow..1.week.from_now)
+
+    render json: @musics
+  end
+
   private
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_music
     @music = Music.find(params[:id])
   end
 
-  # Only allow a list of trusted parameters through.
   def music_params
     params.require(:music).permit(:album_id, :title, :release_date, feat: [])
   end
