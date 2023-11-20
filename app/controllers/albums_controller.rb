@@ -3,7 +3,7 @@ class AlbumsController < ApplicationController
 
   # GET /albums
   def index
-    @albums = Album.all
+    @albums = Album.filter(filter_params)
 
     render json: @albums
   end
@@ -38,20 +38,31 @@ class AlbumsController < ApplicationController
     @album.destroy!
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_album
-      @album = Album.find(params[:id])
-    end
+  def coming_soon
+    @albums = Album.where(release_date: Date.tomorrow..1.week.from_now)
 
-    # Only allow a list of trusted parameters through.
-    def album_params
-      params
-        .require(:album)
-        .permit(
-          :title, :release_date, :artist_id,
-          artist_attributes: [:nickname, :full_name, :birthday, :country],
-          musics_attributes: [:title, :release_date, feat: []]
-        )
-    end
+    render json: @albums
+  end
+
+  private
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_album
+    @album = Album.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def album_params
+    params
+      .require(:album)
+      .permit(
+        :title, :release_date, :artist_id,
+        artist_attributes: [:nickname, :full_name, :birthday, :country],
+        musics_attributes: [:title, :release_date, feat: []]
+      )
+  end
+
+  def filter_params
+    params.permit(:release_date)
+  end
 end

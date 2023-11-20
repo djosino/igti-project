@@ -18,6 +18,8 @@
 #  fk_rails_...  (artist_id => artists.id)
 #
 class Album < ApplicationRecord
+  include Filterable
+
   belongs_to :artist
   has_many :musics, dependent: :destroy
 
@@ -25,6 +27,8 @@ class Album < ApplicationRecord
   validates :release_date, presence: true
 
   accepts_nested_attributes_for :artist, :musics
+
+  scope :filter_by_release_date, -> (date) { where(release_date: date) }
 
   def to_json(_options  = {})
     attributes.except('artist_id').merge(
